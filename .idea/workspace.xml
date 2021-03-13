@@ -3,17 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3780f160-2d9b-4a0d-a214-d9cdff04c94d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/create-class.php" beforeDir="false" afterPath="$PROJECT_DIR$/create-class.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/create-subject.php" beforeDir="false" afterPath="$PROJECT_DIR$/create-subject.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/edit-class.php" beforeDir="false" afterPath="$PROJECT_DIR$/edit-class.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/edit-result.php" beforeDir="false" afterPath="$PROJECT_DIR$/edit-result.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/edit-student.php" beforeDir="false" afterPath="$PROJECT_DIR$/edit-student.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/edit-subject.php" beforeDir="false" afterPath="$PROJECT_DIR$/edit-subject.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/manage-classes.php" beforeDir="false" afterPath="$PROJECT_DIR$/manage-classes.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/manage-results.php" beforeDir="false" afterPath="$PROJECT_DIR$/manage-results.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/manage-students.php" beforeDir="false" afterPath="$PROJECT_DIR$/manage-students.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/manage-subjectcombination.php" beforeDir="false" afterPath="$PROJECT_DIR$/manage-subjectcombination.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/manage-subjects.php" beforeDir="false" afterPath="$PROJECT_DIR$/manage-subjects.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,11 +40,24 @@
       <workItem from="1615642447179" duration="4000" />
       <workItem from="1615642463934" duration="2000" />
       <workItem from="1615644328362" duration="172000" />
-      <workItem from="1615644543759" duration="624000" />
+      <workItem from="1615644543759" duration="774000" />
+      <workItem from="1615645648982" duration="30000" />
     </task>
+    <task id="LOCAL-00001" summary="add footer">
+      <created>1615645254898</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1615645254898</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="add footer" />
+    <option name="LAST_COMMIT_MESSAGE" value="add footer" />
   </component>
 </project>

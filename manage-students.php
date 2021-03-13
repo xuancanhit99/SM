@@ -98,7 +98,7 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                         <tr>
                                                             <td><?php echo htmlentities($cnt); ?></td>
                                                             <td><?php echo htmlentities($result->StudentName); ?></td>
-                                                            <td><?php echo htmlentities($result->RollId); ?></td>
+                                                            <td><?php echo htmlentities($result->StudentNo); ?></td>
                                                             <td><?php echo htmlentities($result->ClassName); ?>-<?php echo htmlentities($result->ClassNumber); ?>-<?php echo htmlentities($result->ClassYear); ?>
                                                             </td>
                                                             <td><?php echo htmlentities($result->RegDate); ?></td>
