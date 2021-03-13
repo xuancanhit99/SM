@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3780f160-2d9b-4a0d-a214-d9cdff04c94d" name="Default Changelist" comment="" />
+    <list default="true" id="3780f160-2d9b-4a0d-a214-d9cdff04c94d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/create-class.php" beforeDir="false" afterPath="$PROJECT_DIR$/create-class.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/create-subject.php" beforeDir="false" afterPath="$PROJECT_DIR$/create-subject.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/edit-class.php" beforeDir="false" afterPath="$PROJECT_DIR$/edit-class.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/edit-result.php" beforeDir="false" afterPath="$PROJECT_DIR$/edit-result.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/edit-student.php" beforeDir="false" afterPath="$PROJECT_DIR$/edit-student.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/edit-subject.php" beforeDir="false" afterPath="$PROJECT_DIR$/edit-subject.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manage-classes.php" beforeDir="false" afterPath="$PROJECT_DIR$/manage-classes.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manage-results.php" beforeDir="false" afterPath="$PROJECT_DIR$/manage-results.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manage-students.php" beforeDir="false" afterPath="$PROJECT_DIR$/manage-students.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manage-subjectcombination.php" beforeDir="false" afterPath="$PROJECT_DIR$/manage-subjectcombination.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manage-subjects.php" beforeDir="false" afterPath="$PROJECT_DIR$/manage-subjects.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -9,6 +22,9 @@
   </component>
   <component name="ComposerSettings">
     <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1phjWWLQWrB6pAA42GcTWYev6wF" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -33,6 +49,8 @@
       <workItem from="1615642251611" duration="9000" />
       <workItem from="1615642447179" duration="4000" />
       <workItem from="1615642463934" duration="2000" />
+      <workItem from="1615644328362" duration="172000" />
+      <workItem from="1615644543759" duration="624000" />
     </task>
     <servers />
   </component>

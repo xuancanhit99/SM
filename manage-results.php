@@ -145,6 +145,15 @@ if (strlen($_SESSION['alogin']) == 0) {
         });
     </script>
     </body>
+    <div class="foot">
+        <footer>
+            <?php include('includes/footer.php'); ?>
+        </footer>
+    </div>
+    <style> .foot {
+            text-align: center;
+            */
+        }</style>
     </html>
 <?php } ?>
 

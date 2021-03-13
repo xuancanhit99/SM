@@ -231,5 +231,14 @@ if (strlen($_SESSION['alogin']) == 0) {
         <script src="js/lobipanel/lobipanel.min.js"></script>
         <script src="js/main.js"></script>
     </body>
+    <div class="foot">
+        <footer>
+            <?php include('includes/footer.php'); ?>
+        </footer>
+    </div>
+    <style> .foot {
+            text-align: center;
+            */
+        }</style>
     </html>
 <?PHP } ?>
