@@ -2,6 +2,7 @@
 session_start();
 error_reporting(0);
 include('includes/db_connection.php');
+global $dbh, $error;
 if (strlen($_SESSION['alogin']) == 0) {
     header("Location: index.php");
 } else {
@@ -110,8 +111,7 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="default" class="col-sm-2 control-label">Email
-                                                            id)</label>
+                                                        <label for="default" class="col-sm-2 control-label">Email</label>
                                                         <div class="col-sm-10">
                                                             <input type="email" name="emailid" class="form-control"
                                                                    id="email"

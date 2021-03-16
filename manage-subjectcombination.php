@@ -17,6 +17,15 @@ if (strlen($_SESSION['alogin']) == 0) {
         $msg = "Subject Activate successfully";
     }
 
+    if (isset($_GET['sjcid'])) {
+        $sjcid = intval($_GET['sjcid']);
+        $sql = "delete from subjectcombination where id=:sjcid ";
+        $query = $dbh->prepare($sql);
+        $query->bindParam(':sjcid', $sjcid, PDO::PARAM_STR);
+        $query->execute();
+        $msg = "Subject Combination has been deleted";
+    }
+
     if (isset($_GET['did'])) {
         $did = intval($_GET['did']);
         $status = 0;
@@ -115,7 +124,9 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                     foreach ($results as $result) { ?>
                                                         <tr>
                                                             <td><?php echo htmlentities($cnt); ?></td>
-                                                            <td><?php echo htmlentities($result->ClassName); ?>-<?php echo htmlentities($result->ClassNumber); ?>-<?php echo htmlentities($result->ClassYear); ?></td>
+                                                            <td><?php echo htmlentities($result->ClassName); ?>
+                                                                -<?php echo htmlentities($result->ClassNumber); ?>
+                                                                -<?php echo htmlentities($result->ClassYear); ?></td>
                                                             <td><?php echo htmlentities($result->SubjectName); ?></td>
                                                             <td><?php $stts = $result->status;
                                                                 if ($stts == '0') {
@@ -127,16 +138,24 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                             <td>
                                                                 <?php if ($stts == '0') { ?>
                                                                 <a href="manage-subjectcombination.php?acid=<?php echo htmlentities($result->scid); ?>"
-                                                                   onclick="confirm('do you really want to ativate this subject');">
+                                                                   title="Active"
+                                                                   onclick="return confirm('Do you really want to activate this subject')">
                                                                         <i class="fa fa-check"
                                                                            title="Acticvate Record"></i>
+
                                                                     </a><?php } else { ?>
 
                                                                     <a href="manage-subjectcombination.php?did=<?php echo htmlentities($result->scid); ?>"
-                                                                       onclick="confirm('do you really want to deativate this subject');"><i
+                                                                       title="Deactive"
+                                                                       onclick="return confirm('Do you really want to deactivate this subject')"><i
                                                                                 class="fa fa-times"
                                                                                 title="Deactivate Record"></i> </a>
                                                                 <?php } ?>
+                                                                <a href="manage-subjectcombination.php?sjcid=<?php echo htmlentities($result->scid); ?>"
+                                                                   title="Delete Record" class="delete"
+                                                                   onclick="return confirm('Are you sure you want to delete this Subject Combination')"><i
+                                                                            class="fa fa-trash-alt"
+                                                                            title="Delete Record"></i></a>
                                                             </td>
                                                         </tr>
                                                         <?php $cnt = $cnt + 1;

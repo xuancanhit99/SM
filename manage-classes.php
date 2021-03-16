@@ -6,6 +6,15 @@ global $dbh, $msg, $error;
 if (strlen($_SESSION['alogin']) == 0) {
     header("Location: index.php");
 } else {
+    if (isset($_GET['clid'])) {
+        $clid = intval($_GET['clid']);
+        $sql = "delete from classes where id=:clid ";
+        $query = $dbh->prepare($sql);
+        $query->bindParam(':clid', $clid, PDO::PARAM_STR);
+        $query->execute();
+        $msg = "Class has been deleted";
+    }
+
     ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -57,10 +66,10 @@ if (strlen($_SESSION['alogin']) == 0) {
                                         </div>
                                         <?php if ($msg) { ?>
                                             <div class="alert alert-success left-icon-alert" role="alert">
-                                            <strong>Well done!</strong><?php echo htmlentities($msg); ?>
+                                            <strong>Well done! </strong><?php echo htmlentities($msg); ?>
                                             </div><?php } else if ($error) { ?>
                                             <div class="alert alert-danger left-icon-alert" role="alert">
-                                                <strong>Oh snap!</strong> <?php echo htmlentities($error); ?>
+                                                <strong>Oh snap! </strong> <?php echo htmlentities($error); ?>
                                             </div>
                                         <?php } ?>
                                         <div class="panel-body p-20">
@@ -102,9 +111,15 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                             <td><?php echo htmlentities($result->ClassYear); ?></td>
                                                             <td><?php echo htmlentities($result->CreationDate); ?></td>
                                                             <td>
-                                                                <a href="edit-class.php?classid=<?php echo htmlentities($result->id); ?>"><i
+                                                                <a href="edit-class.php?classid=<?php echo htmlentities($result->id); ?>">
+                                                                    <i
                                                                             class="fa fa-edit" title="Edit Record"></i>
                                                                 </a>
+                                                                <a href="manage-classes.php?clid=<?php echo htmlentities($result->id); ?>"
+                                                                   title="Delete Record" class="delete"
+                                                                   onclick="return confirm('Are you sure you want to delete this class')"><i
+                                                                            class="fa fa-trash-alt"
+                                                                            title="Delete Record"></i></a>
                                                             </td>
                                                         </tr>
                                                         <?php $cnt = $cnt + 1;

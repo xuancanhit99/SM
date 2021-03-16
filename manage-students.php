@@ -2,9 +2,18 @@
 session_start();
 error_reporting(0);
 include('includes/db_connection.php');
+global $dbh, $error;
 if (strlen($_SESSION['alogin']) == 0) {
     header("Location: index.php");
 } else {
+    if (isset($_GET['stuid'])) {
+        $stuid = intval($_GET['stuid']);
+        $sql = "delete from students where StudentID=:stuid ";
+        $query = $dbh->prepare($sql);
+        $query->bindParam(':stuid', $stuid, PDO::PARAM_STR);
+        $query->execute();
+        $msg = "Student has been deleted";
+    }
     ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -56,10 +65,10 @@ if (strlen($_SESSION['alogin']) == 0) {
                                         </div>
                                         <?php if ($msg) { ?>
                                             <div class="alert alert-success left-icon-alert" role="alert">
-                                            <strong>Well done!</strong><?php echo htmlentities($msg); ?>
+                                            <strong>Well done! </strong><?php echo htmlentities($msg); ?>
                                             </div><?php } else if ($error) { ?>
                                             <div class="alert alert-danger left-icon-alert" role="alert">
-                                                <strong>Oh snap!</strong> <?php echo htmlentities($error); ?>
+                                                <strong>Oh snap! </strong> <?php echo htmlentities($error); ?>
                                             </div>
                                         <?php } ?>
                                         <div class="panel-body p-20">
@@ -99,7 +108,9 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                             <td><?php echo htmlentities($cnt); ?></td>
                                                             <td><?php echo htmlentities($result->StudentName); ?></td>
                                                             <td><?php echo htmlentities($result->StudentNo); ?></td>
-                                                            <td><?php echo htmlentities($result->ClassName); ?>-<?php echo htmlentities($result->ClassNumber); ?>-<?php echo htmlentities($result->ClassYear); ?>
+                                                            <td><?php echo htmlentities($result->ClassName); ?>
+                                                                -<?php echo htmlentities($result->ClassNumber); ?>
+                                                                -<?php echo htmlentities($result->ClassYear); ?>
                                                             </td>
                                                             <td><?php echo htmlentities($result->RegDate); ?></td>
                                                             <td><?php if ($result->Status == 1) {
@@ -112,6 +123,11 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                                 <a href="edit-student.php?stid=<?php echo htmlentities($result->StudentID); ?>"><i
                                                                             class="fa fa-edit" title="Edit Record"></i>
                                                                 </a>
+                                                                <a href="manage-students.php?stuid=<?php echo htmlentities($result->StudentID); ?>"
+                                                                   title="Delete Record" class="delete"
+                                                                   onclick="return confirm('Are you sure you want to delete this student')"><i
+                                                                            class="fa fa-trash-alt"
+                                                                            title="Delete Record"></i></a>
                                                             </td>
                                                         </tr>
                                                         <?php $cnt = $cnt + 1;

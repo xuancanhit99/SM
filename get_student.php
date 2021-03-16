@@ -1,5 +1,6 @@
 <?php
 include('includes/db_connection.php');
+global $dbh;
 if (!empty($_POST["classid"])) {
     $cid = intval($_POST['classid']);
     if (!is_numeric($cid)) {

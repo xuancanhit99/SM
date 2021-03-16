@@ -2,6 +2,7 @@
 session_start();
 error_reporting(0);
 include('includes/db_connection.php');
+global  $dbh;
 if (strlen($_SESSION['alogin']) == 0) {
     header("Location: index.php");
 } else {

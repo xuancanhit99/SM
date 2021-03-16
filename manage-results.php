@@ -1,6 +1,7 @@
 <?php
 session_start();
 error_reporting(0);
+global $dbh, $msg, $error;
 include('includes/db_connection.php');
 if (strlen($_SESSION['alogin']) == 0) {
     header("Location: index.php");
