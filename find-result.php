@@ -1,7 +1,7 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/db_connection.php');
+include 'includes/db_connection.php';
 global $dbh
 ?>
 <!DOCTYPE html>
@@ -11,13 +11,17 @@ global $dbh
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="University">
+    <link rel="shortcut icon" href="../images/logo/mirea.ico">
+
     <meta name="author" content="Xuan Canh">
     <title>Student Management</title>
     <link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
     <link rel="stylesheet" href="css/main.css" media="screen">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;1,100;1,500;1,600&family=Rajdhani:wght@500&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/e427de2876.js" crossorigin=""></script>
 </head>
-<body class="">
+<body class="" style="font-family: 'Montserrat', sans-serif;">
 <div class="main-wrapper">
     <div class="login-bg-color bg-black-300">
         <div class="row">
@@ -41,17 +45,17 @@ global $dbh
                                 <select name="class" class="form-control" id="default" required="required">
                                     <option value="">Select Class</option>
                                     <?php
-                                    $sql = "Select * from classes";
-                                    $query = $dbh->prepare($sql);
-                                    $query->execute();
-                                    $results = $query->fetchAll(PDO::FETCH_OBJ);
-                                    if ($query->rowCount() > 0) {
-                                        foreach ($results as $result) { ?>
+$sql = "Select * from classes";
+$query = $dbh->prepare($sql);
+$query->execute();
+$results = $query->fetchAll(PDO::FETCH_OBJ);
+if ($query->rowCount() > 0) {
+    foreach ($results as $result) {?>
                                             <option value="<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->ClassName); ?>
                                                 &nbsp;<?php echo htmlentities($result->ClassNumber); ?>
                                                 -<?php echo htmlentities($result->ClassYear); ?></option>
                                         <?php }
-                                    } ?>
+}?>
                                 </select>
                             </div>
                             <div class="form-group mt-20">
@@ -63,7 +67,7 @@ global $dbh
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <a href="index.php">Back to Home</a>
+                                <a href="../index.php">Back to Home</a>
                             </div>
                         </form>
                         <hr>

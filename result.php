@@ -1,7 +1,7 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/db_connection.php');
+include 'includes/db_connection.php';
 global $dbh;
 ?>
 <!DOCTYPE html>
@@ -12,12 +12,16 @@ global $dbh;
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="University">
     <meta name="author" content="Xuan Canh">
+    <link rel="shortcut icon" href="../images/logo/mirea.ico">
+
     <title>Student Management</title>
     <link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
     <link rel="stylesheet" href="css/main.css" media="screen">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;1,100;1,500;1,600&family=Rajdhani:wght@500&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/e427de2876.js" crossorigin=""></script>
 </head>
-<body>
+<body style="font-family: 'Montserrat', sans-serif;">
 <div class="main-wrapper">
     <div class="content-wrapper">
         <div class="content-container">
@@ -37,21 +41,19 @@ global $dbh;
                                     <div class="panel-heading">
                                         <div class="panel-title">
                                             <?php
-                                            $studentno = $_POST['studentno'];
-                                            $classid = $_POST['class'];
-                                            $_SESSION['studentno'] = $studentno;
-                                            $_SESSION['classid'] = $classid;
-                                            $qery = "Select students.StudentName, students.StudentNo, students.RegDate, students.StudentID, students.Status, classes.ClassName, classes.ClassNumber, classes.ClassYear from students join classes on classes.id=students.ClassID where students.StudentNo=:studentno and students.ClassID=:classid ";
-                                            $stmt = $dbh->prepare($qery);
-                                            $stmt->bindParam(':studentno', $studentno, PDO::PARAM_STR);
-                                            $stmt->bindParam(':classid', $classid, PDO::PARAM_STR);
-                                            $stmt->execute();
-                                            $resultss = $stmt->fetchAll(PDO::FETCH_OBJ);
-                                            $cnt = 1;
-                                            if ($stmt->rowCount() > 0)
-                                            {
-                                            foreach ($resultss as $row)
-                                            { ?>
+$studentno = $_POST['studentno'];
+$classid = $_POST['class'];
+$_SESSION['studentno'] = $studentno;
+$_SESSION['classid'] = $classid;
+$qery = "Select students.StudentName, students.StudentNo, students.RegDate, students.StudentID, students.Status, classes.ClassName, classes.ClassNumber, classes.ClassYear from students join classes on classes.id=students.ClassID where students.StudentNo=:studentno and students.ClassID=:classid ";
+$stmt = $dbh->prepare($qery);
+$stmt->bindParam(':studentno', $studentno, PDO::PARAM_STR);
+$stmt->bindParam(':classid', $classid, PDO::PARAM_STR);
+$stmt->execute();
+$resultss = $stmt->fetchAll(PDO::FETCH_OBJ);
+$cnt = 1;
+if ($stmt->rowCount() > 0) {
+    foreach ($resultss as $row) {?>
                                         </div>
                                         <div class="panel-body p-20">
                                             <table class="table table-hover table-bordered" id="dataTable" width="100%"
@@ -66,7 +68,7 @@ global $dbh;
                                                             Class:</b> <?php echo htmlentities($row->ClassName); ?>-<?php echo htmlentities($row->ClassNumber); ?>-<?php echo htmlentities($row->ClassYear); ?>
                                                     </th>
                                                     <?php }
-                                                    ?>
+    ?>
 
                                                 </tr>
                                                 </thead>
@@ -84,28 +86,27 @@ global $dbh;
                                                 </thead>
                                                 <tbody>
                                                 <?php
-                                                // Code for result
-                                                $query = "select t.StudentName,t.StudentNo,t.ClassID,t.Marks, t.SubjectID,subjects.SubjectName from (select students.StudentName, students.StudentNo, students.ClassID, results.Marks, results.SubjectID from students join results on results.StudentID=students.StudentID) as t join subjects on subjects.id=t.SubjectID where (t.StudentNo=:studentno and t.ClassID=:classid)";
-                                                $query = $dbh->prepare($query);
-                                                $query->bindParam(':studentno', $studentno, PDO::PARAM_STR);
-                                                $query->bindParam(':classid', $classid, PDO::PARAM_STR);
-                                                $query->execute();
-                                                $results = $query->fetchAll(PDO::FETCH_OBJ);
-                                                $cnt = 1;
-                                                if ($countrow = $query->rowCount() > 0)
-                                                {
-                                                    foreach ($results as $result) {
-                                                        ?>
+// Code for result
+    $query = "select t.StudentName,t.StudentNo,t.ClassID,t.Marks, t.SubjectID,subjects.SubjectName from (select students.StudentName, students.StudentNo, students.ClassID, results.Marks, results.SubjectID from students join results on results.StudentID=students.StudentID) as t join subjects on subjects.id=t.SubjectID where (t.StudentNo=:studentno and t.ClassID=:classid)";
+    $query = $dbh->prepare($query);
+    $query->bindParam(':studentno', $studentno, PDO::PARAM_STR);
+    $query->bindParam(':classid', $classid, PDO::PARAM_STR);
+    $query->execute();
+    $results = $query->fetchAll(PDO::FETCH_OBJ);
+    $cnt = 1;
+    if ($countrow = $query->rowCount() > 0) {
+        foreach ($results as $result) {
+            ?>
                                                         <tr>
                                                             <th scope="row"><?php echo htmlentities($cnt); ?></th>
                                                             <td><?php echo htmlentities($result->SubjectName); ?></td>
                                                             <td><?php echo htmlentities($totalmarks = $result->Marks); ?></td>
                                                         </tr>
                                                         <?php
-                                                        $totlcount += $totalmarks;
-                                                        $cnt++;
-                                                    }
-                                                    ?>
+$totlcount += $totalmarks;
+            $cnt++;
+        }
+        ?>
                                                     <tr>
                                                         <th scope="row" colspan="2">Total Marks</th>
                                                         <td><b><?php echo htmlentities($totlcount); ?></b> out of
@@ -117,22 +118,21 @@ global $dbh;
                                                         <td><b><?php echo htmlentities($totlcount * (100) / $outof); ?>
                                                                 %</b></td>
                                                     </tr>
-                                                <?php } else { ?>
+                                                <?php } else {?>
                                                 <div class="alert alert-warning left-icon-alert" role="alert">
                                                     <strong>Notice!</strong> Your result not declare yet
                                                     <?php }
-                                                    ?>
+    ?>
                                                 </div>
                                                 <?php
-                                                } else
-                                                {
-                                                ?>
+} else {
+    ?>
                                                 <div class="alert alert-danger left-icon-alert" role="alert">
                                                     <strong>Oh wrong!</strong>
                                                     <?php
-                                                    echo htmlentities("Invalid Student ID.");
-                                                    }
-                                                    ?>
+echo htmlentities("Invalid Student ID.");
+}
+?>
                                                 </div>
                                                 </tbody>
                                             </table>

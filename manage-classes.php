@@ -1,21 +1,26 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/db_connection.php');
+include 'includes/db_connection.php';
 global $dbh, $msg, $error;
-if (strlen($_SESSION['alogin']) == 0) {
-    header("Location: index.php");
+if (!isset($_SESSION["email"])) {
+    header('location: ../index.php');
 } else {
-    if (isset($_GET['clid'])) {
-        $clid = intval($_GET['clid']);
-        $sql = "delete from classes where id=:clid ";
-        $query = $dbh->prepare($sql);
-        $query->bindParam(':clid', $clid, PDO::PARAM_STR);
-        $query->execute();
-        $msg = "Class has been deleted";
-    }
+    if ((Boolean) $_SESSION["isStudent"]) {
+        header('location: ../index.php');
+    } else if ((Boolean) $_SESSION["isEditor"]) {
+        header('location: ../index.php');
+    } else {
+        if (isset($_GET['clid'])) {
+            $clid = intval($_GET['clid']);
+            $sql = "delete from classes where id=:clid ";
+            $query = $dbh->prepare($sql);
+            $query->bindParam(':clid', $clid, PDO::PARAM_STR);
+            $query->execute();
+            $msg = "Class has been deleted";
+        }
 
-    ?>
+        ?>
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -24,19 +29,23 @@ if (strlen($_SESSION['alogin']) == 0) {
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="University">
         <meta name="author" content="Xuan Canh">
+        <link rel="shortcut icon" href="../images/logo/mirea.ico">
+
         <title>SM Admin Manage Classes</title>
         <link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
         <link rel="stylesheet" type="text/css" href="js/DataTables/datatables.min.css"/>
         <link rel="stylesheet" href="css/main.css" media="screen">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;1,100;1,500;1,600&family=Rajdhani:wght@500&display=swap" rel="stylesheet">
         <script src="https://kit.fontawesome.com/e427de2876.js" crossorigin=""></script>
 
     </head>
-    <body class="top-navbar-fixed">
+    <body class="top-navbar-fixed" style="font-family: 'Montserrat', sans-serif;">
     <div class="main-wrapper">
-        <?php include('includes/topbar.php'); ?>
+        <?php include 'includes/topbar.php';?>
         <div class="content-wrapper">
             <div class="content-container">
-                <?php include('includes/leftbar.php'); ?>
+                <?php include 'includes/leftbar.php';?>
                 <div class="main-page">
                     <div class="container-fluid">
                         <div class="row page-title-div">
@@ -64,14 +73,14 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                 <h5>View Classes Info</h5>
                                             </div>
                                         </div>
-                                        <?php if ($msg) { ?>
+                                        <?php if ($msg) {?>
                                             <div class="alert alert-success left-icon-alert" role="alert">
                                             <strong>Well done! </strong><?php echo htmlentities($msg); ?>
-                                            </div><?php } else if ($error) { ?>
+                                            </div><?php } else if ($error) {?>
                                             <div class="alert alert-danger left-icon-alert" role="alert">
                                                 <strong>Oh snap! </strong> <?php echo htmlentities($error); ?>
                                             </div>
-                                        <?php } ?>
+                                        <?php }?>
                                         <div class="panel-body p-20">
 
                                             <table id="example" class="display table table-striped table-bordered"
@@ -98,12 +107,12 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                 </tfoot>
                                                 <tbody>
                                                 <?php $sql = "Select * from classes";
-                                                $query = $dbh->prepare($sql);
-                                                $query->execute();
-                                                $results = $query->fetchAll(PDO::FETCH_OBJ);
-                                                $cnt = 1;
-                                                if ($query->rowCount() > 0) {
-                                                    foreach ($results as $result) { ?>
+        $query = $dbh->prepare($sql);
+        $query->execute();
+        $results = $query->fetchAll(PDO::FETCH_OBJ);
+        $cnt = 1;
+        if ($query->rowCount() > 0) {
+            foreach ($results as $result) {?>
                                                         <tr>
                                                             <td><?php echo htmlentities($cnt); ?></td>
                                                             <td><?php echo htmlentities($result->ClassName); ?></td>
@@ -123,8 +132,8 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                             </td>
                                                         </tr>
                                                         <?php $cnt = $cnt + 1;
-                                                    }
-                                                } ?>
+            }
+        }?>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -157,7 +166,7 @@ if (strlen($_SESSION['alogin']) == 0) {
     </body>
     <div class="foot">
         <footer>
-            <?php include('includes/footer.php'); ?>
+            <?php include 'includes/footer.php';?>
         </footer>
     </div>
     <style> .foot {
@@ -165,5 +174,6 @@ if (strlen($_SESSION['alogin']) == 0) {
             */
         }</style>
     </html>
-<?php } ?>
+<?php }
+}?>
 

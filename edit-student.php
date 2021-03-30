@@ -1,34 +1,39 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/db_connection.php');
+include 'includes/db_connection.php';
 global $dbh, $error;
-if (strlen($_SESSION['alogin']) == 0) {
-    header("Location: index.php");
+if (!isset($_SESSION["email"])) {
+    header('location: ../index.php');
 } else {
-    $stid = intval($_GET['stid']);
-    if (isset($_POST['submit'])) {
-        $studentname = $_POST['fullanme'];
-        $studentno = $_POST['studentno'];
-        $studentemail = $_POST['emailid'];
-        $gender = $_POST['gender'];
-        $classid = $_POST['class'];
-        $dob = $_POST['dob'];
-        $status = $_POST['status'];
-        $sql = "update students set StudentName=:studentname,StudentNo=:studentno,StudentEmail=:studentemail,Gender=:gender,DOB=:dob,Status=:status where StudentID=:stid ";
-        $query = $dbh->prepare($sql);
-        $query->bindParam(':studentname', $studentname, PDO::PARAM_STR);
-        $query->bindParam(':studentno', $studentno, PDO::PARAM_STR);
-        $query->bindParam(':studentemail', $studentemail, PDO::PARAM_STR);
-        $query->bindParam(':gender', $gender, PDO::PARAM_STR);
-        $query->bindParam(':dob', $dob, PDO::PARAM_STR);
-        $query->bindParam(':status', $status, PDO::PARAM_STR);
-        $query->bindParam(':stid', $stid, PDO::PARAM_STR);
-        $query->execute();
-        $msg = "Student info updated successfully";
-    }
+    if ((Boolean) $_SESSION["isStudent"]) {
+        header('location: ../index.php');
+    } else if ((Boolean) $_SESSION["isEditor"]) {
+        header('location: ../index.php');
+    } else {
+        $stid = intval($_GET['stid']);
+        if (isset($_POST['submit'])) {
+            $studentname = $_POST['fullanme'];
+            $studentno = $_POST['studentno'];
+            $studentemail = $_POST['emailid'];
+            $gender = $_POST['gender'];
+            $classid = $_POST['class'];
+            $dob = $_POST['dob'];
+            $status = $_POST['status'];
+            $sql = "update students set StudentName=:studentname,StudentNo=:studentno,StudentEmail=:studentemail,Gender=:gender,DOB=:dob,Status=:status where StudentID=:stid ";
+            $query = $dbh->prepare($sql);
+            $query->bindParam(':studentname', $studentname, PDO::PARAM_STR);
+            $query->bindParam(':studentno', $studentno, PDO::PARAM_STR);
+            $query->bindParam(':studentemail', $studentemail, PDO::PARAM_STR);
+            $query->bindParam(':gender', $gender, PDO::PARAM_STR);
+            $query->bindParam(':dob', $dob, PDO::PARAM_STR);
+            $query->bindParam(':status', $status, PDO::PARAM_STR);
+            $query->bindParam(':stid', $stid, PDO::PARAM_STR);
+            $query->execute();
+            $msg = "Student info updated successfully";
+        }
 
-    ?>
+        ?>
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -37,17 +42,21 @@ if (strlen($_SESSION['alogin']) == 0) {
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="University">
         <meta name="author" content="Xuan Canh">
+        <link rel="shortcut icon" href="../images/logo/mirea.ico">
+
         <title>SM Admin| Edit Student < </title>
         <link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
         <link rel="stylesheet" href="css/main.css" media="screen">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;1,100;1,500;1,600&family=Rajdhani:wght@500&display=swap" rel="stylesheet">
         <script src="https://kit.fontawesome.com/e427de2876.js" crossorigin=""></script>
     </head>
-    <body class="top-navbar-fixed">
+    <body class="top-navbar-fixed" style="font-family: 'Montserrat', sans-serif;">
     <div class="main-wrapper">
-        <?php include('includes/topbar.php'); ?>
+        <?php include 'includes/topbar.php';?>
         <div class="content-wrapper">
             <div class="content-container">
-                <?php include('includes/leftbar.php'); ?>
+                <?php include 'includes/leftbar.php';?>
                 <div class="main-page">
                     <div class="container-fluid">
                         <div class="row page-title-div">
@@ -74,24 +83,24 @@ if (strlen($_SESSION['alogin']) == 0) {
                                         </div>
                                     </div>
                                     <div class="panel-body">
-                                        <?php if ($msg) { ?>
+                                        <?php if ($msg) {?>
                                             <div class="alert alert-success left-icon-alert" role="alert">
                                             <strong>Well done!</strong><?php echo htmlentities($msg); ?>
-                                            </div><?php } else if ($error) { ?>
+                                            </div><?php } else if ($error) {?>
                                             <div class="alert alert-danger left-icon-alert" role="alert">
                                                 <strong>Oh snap!</strong> <?php echo htmlentities($error); ?>
                                             </div>
-                                        <?php } ?>
+                                        <?php }?>
                                         <form class="form-horizontal" method="post">
                                             <?php
-                                            $sql = "SELECT students.StudentName,students.StudentNo,students.RegDate,students.StudentID,students.Status,students.StudentEmail,students.Gender,students.DOB,classes.ClassName,classes.ClassNumber,classes.ClassYear from students join classes on classes.id=students.ClassID where students.StudentID=:stid";
-                                            $query = $dbh->prepare($sql);
-                                            $query->bindParam(':stid', $stid, PDO::PARAM_STR);
-                                            $query->execute();
-                                            $results = $query->fetchAll(PDO::FETCH_OBJ);
-                                            $cnt = 1;
-                                            if ($query->rowCount() > 0) {
-                                                foreach ($results as $result) { ?>
+$sql = "SELECT students.StudentName,students.StudentNo,students.RegDate,students.StudentID,students.Status,students.StudentEmail,students.Gender,students.DOB,classes.ClassName,classes.ClassNumber,classes.ClassYear from students join classes on classes.id=students.ClassID where students.StudentID=:stid";
+        $query = $dbh->prepare($sql);
+        $query->bindParam(':stid', $stid, PDO::PARAM_STR);
+        $query->execute();
+        $results = $query->fetchAll(PDO::FETCH_OBJ);
+        $cnt = 1;
+        if ($query->rowCount() > 0) {
+            foreach ($results as $result) {?>
                                                     <div class="form-group">
                                                         <label for="default" class="col-sm-2 control-label">Full Name</label>
                                                         <div class="col-sm-10">
@@ -124,8 +133,8 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                                class="col-sm-2 control-label">Gender</label>
                                                         <div class="col-sm-10">
                                                             <?php $gndr = $result->Gender;
-                                                            if ($gndr == "Male") {
-                                                                ?>
+                if ($gndr == "Male") {
+                    ?>
                                                                 <input type="radio" name="gender" value="Male"
                                                                        required="required" checked>Male <input
                                                                         type="radio" name="gender" value="Female"
@@ -133,10 +142,10 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                                                                           name="gender"
                                                                                                           value="Other"
                                                                                                           required="required">Other
-                                                            <?php } ?>
+                                                            <?php }?>
                                                             <?php
-                                                            if ($gndr == "Female") {
-                                                                ?>
+if ($gndr == "Female") {
+                    ?>
                                                                 <input type="radio" name="gender" value="Male"
                                                                        required="required">Male <input type="radio"
                                                                                                        name="gender"
@@ -145,10 +154,10 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                                                                        checked>Female
                                                                 <input type="radio" name="gender" value="Other"
                                                                        required="required">Other
-                                                            <?php } ?>
+                                                            <?php }?>
                                                             <?php
-                                                            if ($gndr == "Other") {
-                                                                ?>
+if ($gndr == "Other") {
+                    ?>
                                                                 <input type="radio" name="gender" value="Male"
                                                                        required="required">Male <input type="radio"
                                                                                                        name="gender"
@@ -156,7 +165,7 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                                                                        required="required">Female
                                                                 <input type="radio" name="gender" value="Other"
                                                                        required="required" checked>Other
-                                                            <?php } ?>
+                                                            <?php }?>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -189,27 +198,27 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                                class="col-sm-2 control-label">Status</label>
                                                         <div class="col-sm-10">
                                                             <?php $stats = $result->Status;
-                                                            if ($stats == "1") {
-                                                                ?>
+                if ($stats == "1") {
+                    ?>
                                                                 <input type="radio" name="status" value="1"
                                                                        required="required" checked>Active <input
                                                                         type="radio" name="status" value="0"
                                                                         required="required">Block
-                                                            <?php } ?>
+                                                            <?php }?>
                                                             <?php
-                                                            if ($stats == "0") {
-                                                                ?>
+if ($stats == "0") {
+                    ?>
                                                                 <input type="radio" name="status" value="1"
                                                                        required="required">Active <input type="radio"
                                                                                                          name="status"
                                                                                                          value="0"
                                                                                                          required="required"
                                                                                                          checked>Block
-                                                            <?php } ?>
+                                                            <?php }?>
                                                         </div>
                                                     </div>
                                                 <?php }
-                                            } ?>
+        }?>
                                             <div class="form-group">
                                                 <div class="col-sm-offset-2 col-sm-10">
                                                     <button type="submit" name="submit" class="btn btn-warning">Update
@@ -233,7 +242,7 @@ if (strlen($_SESSION['alogin']) == 0) {
     </body>
     <div class="foot">
         <footer>
-            <?php include('includes/footer.php'); ?>
+            <?php include 'includes/footer.php';?>
         </footer>
     </div>
     <style> .foot {
@@ -241,4 +250,5 @@ if (strlen($_SESSION['alogin']) == 0) {
             */
         }</style>
     </html>
-<?PHP } ?>
+<?PHP }
+}?>

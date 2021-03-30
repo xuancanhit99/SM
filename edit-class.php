@@ -1,25 +1,30 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/db_connection.php');
-if (strlen($_SESSION['alogin']) == 0) {
-    header("Location: index.php");
+include 'includes/db_connection.php';
+if (!isset($_SESSION["email"])) {
+    header('location: ../index.php');
 } else {
-    if (isset($_POST['update'])) {
-        $classname = $_POST['classname'];
-        $classnumber = $_POST['classnumber'];
-        $classyear = $_POST['classyear'];
-        $cid = intval($_GET['classid']);
-        $sql = "update  classes set ClassName=:classname,ClassNumber=:classnumber,ClassYear=:classyear where id=:cid ";
-        $query = $dbh->prepare($sql);
-        $query->bindParam(':classname', $classname, PDO::PARAM_STR);
-        $query->bindParam(':classnumber', $classnumber, PDO::PARAM_STR);
-        $query->bindParam(':classyear', $classyear, PDO::PARAM_STR);
-        $query->bindParam(':cid', $cid, PDO::PARAM_STR);
-        $query->execute();
-        $msg = "Data has been updated successfully";
-    }
-    ?>
+    if ((Boolean) $_SESSION["isStudent"]) {
+        header('location: ../index.php');
+    } else if ((Boolean) $_SESSION["isEditor"]) {
+        header('location: ../index.php');
+    } else {
+        if (isset($_POST['update'])) {
+            $classname = $_POST['classname'];
+            $classnumber = $_POST['classnumber'];
+            $classyear = $_POST['classyear'];
+            $cid = intval($_GET['classid']);
+            $sql = "update  classes set ClassName=:classname,ClassNumber=:classnumber,ClassYear=:classyear where id=:cid ";
+            $query = $dbh->prepare($sql);
+            $query->bindParam(':classname', $classname, PDO::PARAM_STR);
+            $query->bindParam(':classnumber', $classnumber, PDO::PARAM_STR);
+            $query->bindParam(':classyear', $classyear, PDO::PARAM_STR);
+            $query->bindParam(':cid', $cid, PDO::PARAM_STR);
+            $query->execute();
+            $msg = "Data has been updated successfully";
+        }
+        ?>
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -28,17 +33,21 @@ if (strlen($_SESSION['alogin']) == 0) {
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="University">
         <meta name="author" content="Xuan Canh">
+        <link rel="shortcut icon" href="../images/logo/mirea.ico">
+
         <title>SM Admin Update Class</title>
         <link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
         <link rel="stylesheet" href="css/main.css" media="screen">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;1,100;1,500;1,600&family=Rajdhani:wght@500&display=swap" rel="stylesheet">
         <script src="https://kit.fontawesome.com/e427de2876.js" crossorigin=""></script>
     </head>
-    <body class="top-navbar-fixed">
+    <body class="top-navbar-fixed" style="font-family: 'Montserrat', sans-serif;">
     <div class="main-wrapper">
-        <?php include('includes/topbar.php'); ?>
+        <?php include 'includes/topbar.php';?>
         <div class="content-wrapper">
             <div class="content-container">
-                <?php include('includes/leftbar.php'); ?>
+                <?php include 'includes/leftbar.php';?>
                 <div class="main-page">
                     <div class="container-fluid">
                         <div class="row page-title-div">
@@ -66,26 +75,26 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                 <h5>Update Student Class info</h5>
                                             </div>
                                         </div>
-                                        <?php if ($msg) { ?>
+                                        <?php if ($msg) {?>
                                             <div class="alert alert-success left-icon-alert" role="alert">
                                             <strong>Well done!</strong><?php echo htmlentities($msg); ?>
-                                            </div><?php } else if ($error) { ?>
+                                            </div><?php } else if ($error) {?>
                                             <div class="alert alert-danger left-icon-alert" role="alert">
                                                 <strong>Oh snap!</strong> <?php echo htmlentities($error); ?>
                                             </div>
-                                        <?php } ?>
+                                        <?php }?>
                                         <div class="panel-body">
                                         <form method="post">
                                             <?php
-                                            $cid = intval($_GET['classid']);
-                                            $sql = "SELECT * from classes where id=:cid";
-                                            $query = $dbh->prepare($sql);
-                                            $query->bindParam(':cid', $cid, PDO::PARAM_STR);
-                                            $query->execute();
-                                            $results = $query->fetchAll(PDO::FETCH_OBJ);
-                                            $cnt = 1;
-                                            if ($query->rowCount() > 0) {
-                                                foreach ($results as $result) { ?>
+$cid = intval($_GET['classid']);
+        $sql = "SELECT * from classes where id=:cid";
+        $query = $dbh->prepare($sql);
+        $query->bindParam(':cid', $cid, PDO::PARAM_STR);
+        $query->execute();
+        $results = $query->fetchAll(PDO::FETCH_OBJ);
+        $cnt = 1;
+        if ($query->rowCount() > 0) {
+            foreach ($results as $result) {?>
                                                     <div class="form-group has-success">
                                                         <label for="success" class="control-label">Class Name</label>
                                                         <div class="">
@@ -117,7 +126,7 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                         </div>
                                                     </div>
                                                 <?php }
-                                            } ?>
+        }?>
                                             <div class="form-group has-success">
                                                 <div class="">
                                                     <button type="submit" name="update"
@@ -143,7 +152,7 @@ if (strlen($_SESSION['alogin']) == 0) {
     </body>
     <div class="foot">
         <footer>
-            <?php include('includes/footer.php'); ?>
+            <?php include 'includes/footer.php';?>
         </footer>
     </div>
     <style> .foot {
@@ -151,4 +160,5 @@ if (strlen($_SESSION['alogin']) == 0) {
             */
         }</style>
     </html>
-<?php } ?>
+<?php }
+}?>

@@ -1,30 +1,35 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/db_connection.php');
+include 'includes/db_connection.php';
 global $dbh, $error;
-if (strlen($_SESSION['alogin']) == 0) {
-    header("Location: index.php");
+if (!isset($_SESSION["email"])) {
+    header('location: ../index.php');
 } else {
-    $stid = intval($_GET['stid']);
-    if (isset($_POST['submit'])) {
-        $rowid = $_POST['id'];
-        $marks = $_POST['marks'];
-        foreach ($_POST['id'] as $count => $id) {
-            $mrks = $marks[$count];
-            $iid = $rowid[$count];
-            for ($i = 0; $i <= $count; $i++) {
-                $sql = "update results  set marks=:mrks where id=:iid ";
-                $query = $dbh->prepare($sql);
-                $query->bindParam(':mrks', $mrks, PDO::PARAM_STR);
-                $query->bindParam(':iid', $iid, PDO::PARAM_STR);
-                $query->execute();
-                $msg = "Result info updated successfully";
+    if ((Boolean) $_SESSION["isStudent"]) {
+        header('location: ../index.php');
+    } else if ((Boolean) $_SESSION["isEditor"]) {
+        header('location: ../index.php');
+    } else {
+        $stid = intval($_GET['stid']);
+        if (isset($_POST['submit'])) {
+            $rowid = $_POST['id'];
+            $marks = $_POST['marks'];
+            foreach ($_POST['id'] as $count => $id) {
+                $mrks = $marks[$count];
+                $iid = $rowid[$count];
+                for ($i = 0; $i <= $count; $i++) {
+                    $sql = "update results  set marks=:mrks where id=:iid ";
+                    $query = $dbh->prepare($sql);
+                    $query->bindParam(':mrks', $mrks, PDO::PARAM_STR);
+                    $query->bindParam(':iid', $iid, PDO::PARAM_STR);
+                    $query->execute();
+                    $msg = "Result info updated successfully";
+                }
             }
         }
-    }
 
-    ?>
+        ?>
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -33,17 +38,21 @@ if (strlen($_SESSION['alogin']) == 0) {
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="University">
         <meta name="author" content="Xuan Canh">
+        <link rel="shortcut icon" href="../images/logo/mirea.ico">
+
         <title>SM Admin| Student result info < </title>
         <link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
         <link rel="stylesheet" href="css/main.css" media="screen">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;1,100;1,500;1,600&family=Rajdhani:wght@500&display=swap" rel="stylesheet">
         <script src="https://kit.fontawesome.com/e427de2876.js" crossorigin=""></script>
     </head>
-    <body class="top-navbar-fixed">
+    <body class="top-navbar-fixed" style="font-family: 'Montserrat', sans-serif;">
     <div class="main-wrapper">
-        <?php include('includes/topbar.php'); ?>
+        <?php include 'includes/topbar.php';?>
         <div class="content-wrapper">
             <div class="content-container">
-                <?php include('includes/leftbar.php'); ?>
+                <?php include 'includes/leftbar.php';?>
                 <div class="main-page">
                     <div class="container-fluid">
                         <div class="row page-title-div">
@@ -70,24 +79,24 @@ if (strlen($_SESSION['alogin']) == 0) {
                                         </div>
                                     </div>
                                     <div class="panel-body">
-                                        <?php if ($msg) { ?>
+                                        <?php if ($msg) {?>
                                             <div class="alert alert-success left-icon-alert" role="alert">
                                             <strong>Well done!</strong><?php echo htmlentities($msg); ?>
-                                            </div><?php } else if ($error) { ?>
+                                            </div><?php } else if ($error) {?>
                                             <div class="alert alert-danger left-icon-alert" role="alert">
                                                 <strong>Oh snap!</strong> <?php echo htmlentities($error); ?>
                                             </div>
-                                        <?php } ?>
+                                        <?php }?>
                                         <form class="form-horizontal" method="post">
                                             <?php
-                                            $ret = "SELECT students.StudentName,classes.ClassName,classes.ClassNumber,classes.ClassYear from results join students on results.StudentID=results.StudentID join subjects on subjects.id=results.SubjectID join classes on classes.id=students.ClassID where students.StudentID=:stid limit 1";
-                                            $stmt = $dbh->prepare($ret);
-                                            $stmt->bindParam(':stid', $stid, PDO::PARAM_STR);
-                                            $stmt->execute();
-                                            $result = $stmt->fetchAll(PDO::FETCH_OBJ);
-                                            $cnt = 1;
-                                            if ($stmt->rowCount() > 0) {
-                                                foreach ($result as $row) { ?>
+$ret = "SELECT students.StudentName,classes.ClassName,classes.ClassNumber,classes.ClassYear from results join students on results.StudentID=results.StudentID join subjects on subjects.id=results.SubjectID join classes on classes.id=students.ClassID where students.StudentID=:stid limit 1";
+        $stmt = $dbh->prepare($ret);
+        $stmt->bindParam(':stid', $stid, PDO::PARAM_STR);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $cnt = 1;
+        if ($stmt->rowCount() > 0) {
+            foreach ($result as $row) {?>
                                                     <div class="form-group">
                                                         <label for="default"
                                                                class="col-sm-2 control-label">Class</label>
@@ -103,16 +112,16 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                         </div>
                                                     </div>
                                                 <?php }
-                                            } ?>
+        }?>
                                             <?php
-                                            $sql = "SELECT distinct students.StudentName,students.StudentID,classes.ClassName,classes.ClassNumber,classes.ClassYear,subjects.SubjectName,results.Marks,results.id as resultid from results join students on students.StudentID=results.StudentID join subjects on subjects.id=results.SubjectID join classes on classes.id=students.ClassID where students.StudentID=:stid ";
-                                            $query = $dbh->prepare($sql);
-                                            $query->bindParam(':stid', $stid, PDO::PARAM_STR);
-                                            $query->execute();
-                                            $results = $query->fetchAll(PDO::FETCH_OBJ);
-                                            $cnt = 1;
-                                            if ($query->rowCount() > 0) {
-                                                foreach ($results as $result) { ?>
+$sql = "SELECT distinct students.StudentName,students.StudentID,classes.ClassName,classes.ClassNumber,classes.ClassYear,subjects.SubjectName,results.Marks,results.id as resultid from results join students on students.StudentID=results.StudentID join subjects on subjects.id=results.SubjectID join classes on classes.id=students.ClassID where students.StudentID=:stid ";
+        $query = $dbh->prepare($sql);
+        $query->bindParam(':stid', $stid, PDO::PARAM_STR);
+        $query->execute();
+        $results = $query->fetchAll(PDO::FETCH_OBJ);
+        $cnt = 1;
+        if ($query->rowCount() > 0) {
+            foreach ($results as $result) {?>
                                                     <div class="form-group">
                                                         <label for="default"
                                                                class="col-sm-2 control-label"><?php echo htmlentities($result->SubjectName) ?></label>
@@ -126,7 +135,7 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                         </div>
                                                     </div>
                                                 <?php }
-                                            } ?>
+        }?>
                                             <div class="form-group">
                                                 <div class="col-sm-offset-2 col-sm-10">
                                                     <button type="submit" name="submit" class="btn btn-primary">Update
@@ -150,7 +159,7 @@ if (strlen($_SESSION['alogin']) == 0) {
     </body>
     <div class="foot">
         <footer>
-            <?php include('includes/footer.php'); ?>
+            <?php include 'includes/footer.php';?>
         </footer>
     </div>
     <style> .foot {
@@ -158,4 +167,5 @@ if (strlen($_SESSION['alogin']) == 0) {
             */
         }</style>
     </html>
-<?PHP } ?>
+<?PHP }
+}?>
